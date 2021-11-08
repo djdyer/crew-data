@@ -2,7 +2,7 @@
 
 <br />
 
-## Table of Contents
+## Table of Contents 📦
 
 - [Description](#description)
 - [User Story](#user-story)
@@ -13,14 +13,16 @@
 - [Collaboration](#collaboration)
 
 <br />
+<br />
 
-## Description
+## Description 📝
 
 Crew Data is a back end CMS used to store, track, and update team data directly from your command-line.
 
 <br />
+<br />
 
-## User Story
+## User Story 🔦
 
 ```
 AS A business owner
@@ -30,31 +32,30 @@ SO THAT I can organize and plan my business
 
 <br />
 
-## Installation
+## Installation ⬇️
 
-Application employs:
-[node](https://nodejs.org/en/docs/)
-[inquirer](https://www.npmjs.com/package/inquirer)
-[mySQL2](https://www.npmjs.com/package/mysql2)
-[console.table](https://www.npmjs.com/package/console.table)
-
-Will run in the command-line with:
+Application will run in the command-line with:
 
 ```
 npm start
 ```
 
+Employing the following technology:
+
+[<img src="./assets/images/node.svg" height="20px">](https://nodejs.org/en/docs/) [<img src="./assets/images/npm.svg" height="20px">](https://www.npmjs.com/) [<img src="./assets/images/inquirer.svg" height="20px">](https://www.npmjs.com/package/inquirer)  
+[<img src="./assets/images/express.svg" height="20px">](https://expressjs.com/) [<img src="./assets/images/mysql.svg" height="20px">](https://www.npmjs.com/package/mysql2) [<img src="./assets/images/console.table.svg" height="20px">](https://www.npmjs.com/package/console.table.svg/)
+
 <br />
 <br />
 
-## License
+## License 🚦
 
 [<img src="./assets/images/isc.svg" height="20px">](https://choosealicense.com/licenses/isc/)  
 Copyright (c) David Dyer [2021]
 
 <br />
 
-## Demo
+## Demo 🕹️
 
 [![](assets/demo/...png)](https://youtu.be/...)
 
@@ -62,32 +63,38 @@ Copyright (c) David Dyer [2021]
 <img src="./assets/demo/...png" width = "600">
 
 <br />
+<br />
 
-## Criteria
+## Criteria ✅
 
 ```
 A command-line application that accepts user input.
 
-User is first presented with option to: view departments, view roles, view employees, add department, add role, add employee, or update employee role.
+User is first presented with option to: view departments, view roles, view employees,
+add department, add role, add employee, or update employee role.
 
 View departments presents a formatted table displaying department names and department ids.
 
-View roles presents a formatted table displaying job titles, role ids, parent department, and salary.
+View roles presents a formatted table displaying job titles, role ids, parent department,
+and salary.
 
-View employees presents a formatted table displaying employee ids, first name, last name, job title, department, salary, and reporting manager.
+View employees presents a formatted table displaying employee ids, first name, last name,
+job title, department, salary, and reporting manager.
 
 Add department prompts for name of department to be added to database.
 
 Add role prompts for name, salary, and department of role to be added to database.
 
-Add employee prompts for first / last name, role, and manager of employee to be added to database.
+Add employee prompts for first / last name, role, and manager of employee to be added to
+database.
 
 Update employee role prompts to select employee and update their new role to the database.
 ```
 
 <br />
+<br />
 
-## Collaboration
+## Collaboration 🔧
 
 Development efforts most often include guidance from Jedi Master:
 **Chris Champness**
