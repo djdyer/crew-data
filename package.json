@@ -1,0 +1,24 @@
+{
+  "name": "crew-data",
+  "version": "1.0.0",
+  "description": "store, track, and update employee info",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djdyer/crew-data.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "inquirer": "^6.3.1"
+  },
+  "bugs": {
+    "url": "https://github.com/djdyer/crew-data/issues"
+  },
+  "homepage": "https://github.com/djdyer/crew-data#readme"
+}
