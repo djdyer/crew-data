@@ -1,0 +1,191 @@
+[
+  {
+    "id": "001",
+    "first name": "David",
+    "last name": "Dyer",
+    "job title": "Art Director",
+    "dept": "Design",
+    "salary": "71800",
+    "reporting manager": "Joey Gonzales"
+  },
+  {
+    "id": "002",
+    "first name": "Erica",
+    "last name": "Collette",
+    "job title": "Receptionist",
+    "dept": "Reception",
+    "salary": "44500",
+    "reporting manager": "Joey Gonzales"
+  },
+  {
+    "id": "003",
+    "first name": "Maya",
+    "last name": "Randolph",
+    "job title": "HR Manager",
+    "dept": "Human Resources",
+    "salary": "62000",
+    "reporting manager": "Joey Gonzales"
+  },
+  {
+    "id": "004",
+    "first name": "Joey",
+    "last name": "Gonzales",
+    "job title": "General Manager",
+    "dept": "Management",
+    "salary": "82500",
+    "reporting manager": "null"
+  },
+  {
+    "id": "005",
+    "first name": "Dillon",
+    "last name": "Jones",
+    "job title": "Assistant Manager",
+    "dept": "Management",
+    "salary": "66500",
+    "reporting manager": "Joey Gonzales"
+  },
+  {
+    "id": "006",
+    "first name": "Josh",
+    "last name": "Vides",
+    "job title": "Associate",
+    "dept": "Management",
+    "salary": "52400",
+    "reporting manager": "Dillon Jones"
+  },
+  {
+    "id": "007",
+    "first name": "Jasmin",
+    "last name": "Ortega",
+    "job title": "Associate",
+    "dept": "Management",
+    "salary": "52400",
+    "reporting manager": "Dillon Jones"
+  },
+  {
+    "id": "009",
+    "first name": "Alex",
+    "last name": "Campos",
+    "job title": "Intern",
+    "dept": "Management",
+    "salary": "32500",
+    "reporting manager": "Dillon Jones"
+  },
+  {
+    "id": "010",
+    "first name": "Eddie",
+    "last name": "Ramirez",
+    "job title": "Designer",
+    "dept": "Design",
+    "salary": "60500",
+    "reporting manager": "David Dyer"
+  },
+  {
+    "id": "011",
+    "first name": "Kalyee",
+    "last name": "MacLeod",
+    "job title": "Designer",
+    "dept": "Design",
+    "salary": "60500",
+    "reporting manager": "David Dyer"
+  },
+  {
+    "id": "012",
+    "first name": "Nilo",
+    "last name": "Laguerta",
+    "job title": "Production Coordinator",
+    "dept": "Production",
+    "salary": "64500",
+    "reporting manager": "Joey Gonzales"
+  },
+  {
+    "id": "013",
+    "first name": "Robert",
+    "last name": "Velasquez",
+    "job title": "Production Assistant",
+    "dept": "Production",
+    "salary": "42000",
+    "reporting manager": "Nilo Laguerta"
+  },
+  {
+    "id": "014",
+    "first name": "Nick",
+    "last name": "Miller",
+    "job title": "Production Assistant",
+    "dept": "Production",
+    "salary": "42000",
+    "reporting manager": "Nilo Laguerta"
+  },
+  {
+    "id": "015",
+    "first name": "Kathryn",
+    "last name": "Weigel",
+    "job title": "Digital Marketing Manager",
+    "dept": "Marketing",
+    "salary": "62500",
+    "reporting manager": "Joey Gonzalez"
+  },
+  {
+    "id": "016",
+    "first name": "Julie",
+    "last name": "Suarez",
+    "job title": "Social Media Coordinator",
+    "dept": "Marketing",
+    "salary": "47000",
+    "reporting manager": "Kathryn Weigel"
+  },
+  {
+    "id": "017",
+    "first name": "Scotty",
+    "last name": "Lietel",
+    "job title": "Head of Sales",
+    "dept": "Sales",
+    "salary": "75000",
+    "reporting manager": "Joey Gonzalez"
+  },
+  {
+    "id": "018",
+    "first name": "Mike",
+    "last name": "Franklin",
+    "job title": "Sales Manager",
+    "dept": "Sales",
+    "salary": "59000",
+    "reporting manager": "Scotty Lietel"
+  },
+  {
+    "id": "019",
+    "first name": "Nathan",
+    "last name": "Hayes",
+    "job title": "Sales Manager",
+    "dept": "Sales",
+    "salary": "59000",
+    "reporting manager": "Scotty Lietel"
+  },
+  {
+    "id": "020",
+    "first name": "Ronald",
+    "last name": "Ortiz",
+    "job title": "Warehouse Manager",
+    "dept": "Warehouse",
+    "salary": "57500",
+    "reporting manager": "Joey Gonzalez"
+  },
+  {
+    "id": "021",
+    "first name": "Bill",
+    "last name": "Cramer",
+    "job title": "Warehouse Clerk",
+    "dept": "Warehouse",
+    "salary": "37500",
+    "reporting manager": "Ronald Ortiz"
+  },
+  {
+    "id": "022",
+    "first name": "Tony",
+    "last name": "Rodriguez",
+    "job title": "Warehouse Clerk",
+    "dept": "Warehouse",
+    "salary": "37500",
+    "reporting manager": "Ronald Ortiz"
+  }
+]
