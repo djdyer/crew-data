@@ -4,8 +4,7 @@ const fs = require("fs");
 const initPrompt = [
   {
     type: "list",
-    message:
-      "Welcome to Crew Data\n======================\nMake your selection below to get started:",
+    message: "Make your selection below to get started:",
     choices: [
       "View Departments",
       "View Roles",
@@ -20,9 +19,9 @@ const initPrompt = [
 ];
 
 function initInquire() {
-  inquirer.prompt(initPrompt).then((answers) => {
-    var choice = answers.choice;
-    console.log(choice);
+  console.log("\nWelcome to Crew Data\n====================\n");
+  inquirer.prompt(initPrompt).then((answer) => {
+    var choice = answer.choice;
     switch (choice) {
       case "View Departments":
         viewDepts();
@@ -42,8 +41,8 @@ function initInquire() {
       case "Add Employee":
         addEmployee();
         break;
-      case "Update Department":
-        updateDept();
+      default:
+        updateEmployee();
         break;
     }
   });
@@ -73,7 +72,7 @@ function addEmployee() {
   console.log("figure out how to add an employee!");
 }
 
-function updateDept() {
+function updateEmployee() {
   console.log("figure out how to update an employees info!");
 }
 

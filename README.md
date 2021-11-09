@@ -2,7 +2,9 @@
 
 <br />
 
-## Table of Contents 📦
+## Table of Contents
+
+📦
 
 - [Description](#description)
 - [User Story](#user-story)
@@ -15,14 +17,17 @@
 <br />
 <br />
 
-## Description 📝
+## Description
 
+📝
 Crew Data is a back end CMS used to store, track, and update team data directly from your command-line.
 
 <br />
 <br />
 
-## User Story 🔦
+## User Story
+
+🔦
 
 ```
 AS A business owner
@@ -32,12 +37,13 @@ SO THAT I can organize and plan my business
 
 <br />
 
-## Installation ⬇️
+## Installation
 
+⬇️
 Application will run in the command-line with:
 
 ```
-npm start
+node index
 ```
 
 Employing the following technology:
@@ -48,15 +54,17 @@ Employing the following technology:
 <br />
 <br />
 
-## License 🚦
+## License
 
+🚦
 [<img src="./assets/images/isc.svg" height="20px">](https://choosealicense.com/licenses/isc/)  
 Copyright (c) David Dyer [2021]
 
 <br />
 
-## Demo 🕹️
+## Demo
 
+🕹️
 [![](assets/demo/...png)](https://youtu.be/...)
 
 <img src="./assets/demo/...png" width = "600">
@@ -65,7 +73,9 @@ Copyright (c) David Dyer [2021]
 <br />
 <br />
 
-## Criteria ✅
+## Criteria
+
+✅
 
 ```
 A command-line application that accepts user input.
@@ -94,8 +104,9 @@ Update employee role prompts to select employee and update their new role to the
 <br />
 <br />
 
-## Collaboration 🔧
+## Collaboration
 
+🔧
 Development efforts most often include guidance from Jedi Master:
 **Chris Champness**
 

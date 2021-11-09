@@ -1,41 +1,33 @@
-DROP DATABASE IF EXISTS departments_db;
-CREATE DATABASE departments_db;
+DROP DATABASE IF EXISTS crew_db;
+CREATE DATABASE crew_db;
 
-USE departments_db;
+USE crew_db;
 
 CREATE TABLE departments (
-  department_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  department_id INT NOT NULL AUTO_INCREMENT,
   department_name VARCHAR(30) NOT NULL,
+  PRIMARY KEY (department_id),
 );
-
-
-
-DROP DATABASE IF EXISTS roles_db;
-CREATE DATABASE roles_db;
-
-USE roles_db;
 
 CREATE TABLE roles (
+  role_id INT NOT NULL AUTO_INCREMENT,
   role_name VARCHAR(30) NOT NULL,
-  role_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   parent_dept VARCHAR(30) NOT NULL,
   salary INT NOT NULL DECIMAL,
+  FOREIGN KEY (department_id)
+  REFERENCES departments(department_id)
 );
 
-
-DROP DATABASE IF EXISTS employees_db;
-CREATE DATABASE employees_db;
-
-USE employees_db;
-
 CREATE TABLE employees (
-  employee_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  employee_id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) NOT NULL,
   second_name VARCHAR(30) NOT NULL,
   job_title VARCHAR(30) NOT NULL,
-  deptartment VARCHAR(30) NOT NULL,
+  department VARCHAR(30) NOT NULL,
   salary INT NOT NULL DECIMAL,
   reporting_manager VARCHAR(30) NOT NULL,
+  FOREIGN KEY (department_id)
+  REFERENCES departments(department_id)
 );
 
 
