@@ -27,14 +27,14 @@ VALUES ("Receptionist", 1, 44500),
        ("Warehouse Clerk", 8, 37500);
 
 INSERT INTO employees (first_name, last_name, role_id, manager)
-VALUES ("David", "Dyer", 7, "Joey Gonzales"),
-       ("Erica", "Collette",  1, "Joey Gonzales"),
+VALUES ("Erica", "Collette",  1, "Joey Gonzales"),
        ("Maya", "Randolph",  2,  "Joey Gonzales"),
        ("Joey", "Gonzales", 3, "null"),
        ("Dillon", "Jones", 4, "Joey Gonzales"),
        ("Josh", "Vides", 5, "Dillon Jones"),
        ("Jasmin", "Ortega", 5, "Dillon Jones"),
        ("Alex", "Campos", 6, "Dillon Jones"),
+       ("David", "Dyer", 7, "Joey Gonzales"),
        ("Eddie", "Ramirez", 8, "David Dyer"),
        ("Kaylee", "MacLeod", 8, "David Dyer"),
        ("Nilo", "Laguerta", 9, "Joey Gonzales"),

@@ -1,6 +1,14 @@
 const mysql = require("mysql2");
 const cTable = require("console.table");
 const inquirer = require("inquirer");
+// const fs = require("fs");
+
+// const schema = fs.readFileSync("./db/schema.sql", {
+//   encoding: "utf-8",
+// });
+// const seeds = fs.readFileSync("./db/seeds.sql", {
+//   encoding: "utf-8",
+// });
 
 // mySQL connection created & established
 const db = mysql.createConnection(
@@ -16,6 +24,14 @@ db.connect((err) => {
   if (err) throw err;
   initInquire();
 });
+
+// db.query(schema, (err) => {
+//   if (err) throw err;
+// });
+
+// db.query(seeds, (err) => {
+//   if (err) throw err;
+// });
 
 // First prompt gives full menu of options
 const initPrompt = [
@@ -117,7 +133,7 @@ function viewRoles() {
 // Function to view current employees
 function viewEmployees() {
   db.query(
-    "SELECT * FROM employees JOIN roles ON roles.id ORDER BY employees.first_name",
+    "SELECT employees.id, employees.first_name, employees.last_name, roles.role_name, roles.dept_id, roles.salary, employees.manager FROM employees JOIN roles ON employees.role_id = roles.id",
     (err, rows) => {
       if (err) throw err;
       console.log("\nEMPLOYEES\n=========\n");
