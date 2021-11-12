@@ -162,8 +162,15 @@ const addDeptPrompt = [
 function addDept() {
   inquirer.prompt(addDeptPrompt).then((answer) => {
     var dept = answer.dept_name;
-    console.log(dept + " has been added to the departments database.");
-    // option to restart
+    console.log(dept + " has been added to the departments database.\n");
+    inquirer.prompt(continuePrompt).then((answer) => {
+      var choice = answer.choice;
+      if ((choice = "Yes")) {
+        initInquire();
+      } else {
+        quit();
+      }
+    });
   });
 }
 
@@ -207,9 +214,18 @@ function addRoles() {
         " role has been added to the " +
         dept +
         " department, with a salary of $" +
-        salary
+        salary +
+        "\n"
     );
     // option to restart
+    inquirer.prompt(continuePrompt).then((answer) => {
+      var choice = answer.choice;
+      if ((choice = "Yes")) {
+        initInquire();
+      } else {
+        quit();
+      }
+    });
   });
 }
 
@@ -281,9 +297,17 @@ function addEmployee() {
         last_name +
         "has been added as a new " +
         role_name +
-        " in the database"
+        " in the database\n"
     );
     // option to restart
+    inquirer.prompt(continuePrompt).then((answer) => {
+      var choice = answer.choice;
+      if ((choice = "Yes")) {
+        initInquire();
+      } else {
+        quit();
+      }
+    });
   });
 }
 
@@ -295,6 +319,14 @@ function moreOptions() {
     // hint
     // select employees.first_name, roles.role_name, roles.salary from employees inner join roles on employees.role_id = roles.id
   );
+  inquirer.prompt(continuePrompt).then((answer) => {
+    var choice = answer.choice;
+    if ((choice = "Yes")) {
+      initInquire();
+    } else {
+      quit();
+    }
+  });
 }
 
 function quit() {
