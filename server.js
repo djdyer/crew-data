@@ -102,6 +102,7 @@ function viewDepts() {
     if (err) throw err;
     console.log("\nDEPARTMENTS\n===========\n");
     console.table(rows);
+    // option to restart
     inquirer.prompt(continuePrompt).then((answer) => {
       var choice = answer.choice;
       if ((choice = "Yes")) {
@@ -119,6 +120,7 @@ function viewRoles() {
     if (err) throw err;
     console.log("\nROLES\n=====\n");
     console.table(rows);
+    // option to restart
     inquirer.prompt(continuePrompt).then((answer) => {
       var choice = answer.choice;
       if ((choice = "Yes")) {
@@ -138,6 +140,7 @@ function viewEmployees() {
       if (err) throw err;
       console.log("\nEMPLOYEES\n=========\n");
       console.table(rows);
+      // option to restart
       inquirer.prompt(continuePrompt).then((answer) => {
         var choice = answer.choice;
         if ((choice = "Yes")) {
@@ -162,7 +165,14 @@ const addDeptPrompt = [
 function addDept() {
   inquirer.prompt(addDeptPrompt).then((answer) => {
     var dept = answer.dept_name;
+    // confirmation dept added
     console.log(dept + " has been added to the departments database.\n");
+    // adds new dept to db
+    db.query(`INSERT INTO departments (dept_name) VALUES ("${dept}")`),
+      (err, rows) => {
+        if (err) throw err;
+      };
+    // option to restart
     inquirer.prompt(continuePrompt).then((answer) => {
       var choice = answer.choice;
       if ((choice = "Yes")) {
@@ -182,9 +192,9 @@ const addRolePrompts = [
     name: "role_name",
   },
   {
-    type: "input",
+    type: "list",
     message: "This role is in what department?",
-    choice: [
+    choices: [
       "Reception",
       "Human Resources",
       "Management",
@@ -193,6 +203,7 @@ const addRolePrompts = [
       "Marketing",
       "Sales",
       "Warehouse",
+      // how do we include newly added departments to this prompt?!
     ],
     name: "dept",
   },
@@ -206,17 +217,53 @@ const addRolePrompts = [
 function addRoles() {
   inquirer.prompt(addRolePrompts).then((answers) => {
     var role_name = answers.role_name;
-    var dept = answers.dept;
+    switch (answers.dept) {
+      case "Reception":
+        dept = 1;
+        break;
+      case "Human Resources":
+        dept = 2;
+        break;
+      case "Management":
+        dept = 3;
+        break;
+      case "Design":
+        dept = 4;
+        break;
+      case "Production":
+        dept = 5;
+        break;
+      case "Marketing":
+        dept = 6;
+        break;
+      case "Sales":
+        dept = 7;
+        break;
+      default:
+        dept = 8;
+        break;
+    }
     var salary = answers.salary;
+
+    // confirming role added to db
     console.log(
       "\nThe " +
         role_name +
         " role has been added to the " +
-        dept +
+        answers.dept +
         " department, with a salary of $" +
         salary +
         "\n"
     );
+
+    // adds new role to db
+    db.query(
+      `INSERT INTO roles (role_name, dept_id, salary) VALUES ("${role_name}", "${dept}", "${salary}")`
+    ),
+      (err, rows) => {
+        if (err) throw err;
+      };
+
     // option to restart
     inquirer.prompt(continuePrompt).then((answer) => {
       var choice = answer.choice;
@@ -299,6 +346,15 @@ function addEmployee() {
         role_name +
         " in the database\n"
     );
+
+    // adds new employee to db
+    db.query(
+      `INSERT INTO employees (first_name, last_name, role_id, manager) VALUES ("${first_name}", "${last_name}", "${salary}")`
+    ),
+      (err, rows) => {
+        if (err) throw err;
+      };
+
     // option to restart
     inquirer.prompt(continuePrompt).then((answer) => {
       var choice = answer.choice;
