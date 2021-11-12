@@ -33,57 +33,59 @@ db.connect((err) => {
 //   if (err) throw err;
 // });
 
-// First prompt gives full menu of options
-const initPrompt = [
-  {
-    type: "list",
-    message: "Make your selection below to get started:",
-    choices: [
-      "View Departments",
-      "View Roles",
-      "View Employees",
-      "Add Department",
-      "Add Role",
-      "Add Employee",
-      "Edit/Filter",
-      "Quit",
-    ],
-    name: "choice",
-  },
-];
-// Init function launches secondary, per switch case answer
+// Initialize
 function initInquire() {
   console.log("\nWelcome to Crew Data\n====================\n");
-  inquirer.prompt(initPrompt).then((answer) => {
-    var choice = answer.choice;
-    switch (choice) {
-      case "View Departments":
-        viewDepts();
-        break;
-      case "View Roles":
-        viewRoles();
-        break;
-      case "View Employees":
-        viewEmployees();
-        break;
-      case "Add Department":
-        addDept();
-        break;
-      case "Add Role":
-        addRoles();
-        break;
-      case "Add Employee":
-        addEmployee();
-        break;
-      case "Edit/Filter":
-        moreOptions();
-        break;
-      default:
-        quit();
-        // DOES NOT ACTUALLY QUIT APP
-        break;
-    }
-  });
+  // MAIN MENU
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "Make your selection below to get started:",
+        choices: [
+          "View Departments",
+          "View Roles",
+          "View Employees",
+          "Add Department",
+          "Add Role",
+          "Add Employee",
+          "Edit/Filter",
+          "Quit",
+        ],
+        name: "choice",
+      },
+    ])
+    // Switch case with choice
+    .then((answer) => {
+      var choice = answer.choice;
+      switch (choice) {
+        case "View Departments":
+          viewDepts();
+          break;
+        case "View Roles":
+          viewRoles();
+          break;
+        case "View Employees":
+          viewEmployees();
+          break;
+        case "Add Department":
+          addDept();
+          break;
+        case "Add Role":
+          addRoles();
+          break;
+        case "Add Employee":
+          addEmployee();
+          break;
+        case "Edit/Filter":
+          moreOptions();
+          break;
+        default:
+          quit();
+          // DOES NOT ACTUALLY QUIT APP
+          break;
+      }
+    });
 }
 
 // Last prompt to continue or quit
@@ -153,228 +155,227 @@ function viewEmployees() {
   );
 }
 
-// Asks only for department name
-const addDeptPrompt = [
-  {
-    type: "input",
-    message: "What is the department name?",
-    name: "dept_name",
-  },
-];
 // Function to add new department
 function addDept() {
-  inquirer.prompt(addDeptPrompt).then((answer) => {
-    var dept = answer.dept_name;
-    // confirmation dept added
-    console.log(dept + " has been added to the departments database.\n");
-    // adds new dept to db
-    db.query(`INSERT INTO departments (dept_name) VALUES ("${dept}")`),
-      (err, rows) => {
-        if (err) throw err;
-      };
-    // option to restart
-    inquirer.prompt(continuePrompt).then((answer) => {
-      var choice = answer.choice;
-      if ((choice = "Yes")) {
-        initInquire();
-      } else {
-        quit();
-      }
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the department name?",
+        name: "dept_name",
+      },
+    ])
+    .then((answer) => {
+      var dept = answer.dept_name;
+      // confirmation dept added
+      console.log(dept + " has been added to the departments database.\n");
+      // adds new dept to db
+      db.query(`INSERT INTO departments (dept_name) VALUES ("${dept}")`),
+        (err, rows) => {
+          if (err) throw err;
+        };
+      // option to restart
+      inquirer.prompt(continuePrompt).then((answer) => {
+        var choice = answer.choice;
+        if ((choice = "Yes")) {
+          initInquire();
+        } else {
+          quit();
+        }
+      });
     });
-  });
 }
 
-// Asks for job title, department, and salary for position
-const addRolePrompts = [
-  {
-    type: "input",
-    message: "What is the job title?",
-    name: "role_name",
-  },
-  {
-    type: "list",
-    message: "This role is in what department?",
-    choices: [
-      "Reception",
-      "Human Resources",
-      "Management",
-      "Design",
-      "Production",
-      "Marketing",
-      "Sales",
-      "Warehouse",
-    ],
-    // choices: departmentChoices,
-    name: "dept",
-  },
-  {
-    type: "input",
-    message: "What is salary for this position?",
-    name: "salary",
-  },
-];
+function getValues(table, name) {
+  let results = [];
+  db.query("SELECT * FROM " + table, function (err, result, fields) {
+    if (err) throw err;
+
+    // iterate for all the rows in result
+    Object.keys(result).forEach(function (key) {
+      var row = result[key];
+      // console.log("==>" + name + "_name");
+      f = name + "_name";
+      results.push(row[f]);
+    });
+  });
+  return results;
+}
 // Function to add new role
 function addRoles() {
-  // let departmentChoices = [];
-  // db.query("SELECT * FROM departments", (err, data) => {
-  //   if (err) throw err;
+  let departmentChoices = [];
+  departmentChoices = getValues("departments", "dept");
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the job title?",
+        name: "role_name",
+      },
+      {
+        type: "list",
+        message: "This role is in what department?",
+        choices: departmentChoices,
+        name: "dept",
+      },
+      {
+        type: "input",
+        message: "What is salary for this position?",
+        name: "salary",
+      },
+    ])
+    .then((answers) => {
+      var role_name = answers.role_name;
 
-  //   departmentChoices = data.map((dept) => ({
-  //     name: department.name,
-  //     value: department.id,
-  //   })),
-
-  inquirer.prompt(addRolePrompts).then((answers) => {
-    var role_name = answers.role_name;
-    // DO I REALLY NEED THIS SWITCH CASE?
-    switch (answers.dept) {
-      case "Reception":
-        dept = 1;
-        break;
-      case "Human Resources":
-        dept = 2;
-        break;
-      case "Management":
-        dept = 3;
-        break;
-      case "Design":
-        dept = 4;
-        break;
-      case "Production":
-        dept = 5;
-        break;
-      case "Marketing":
-        dept = 6;
-        break;
-      case "Sales":
-        dept = 7;
-        break;
-      default:
-        dept = 8;
-        break;
-    }
-    var salary = answers.salary;
-
-    // confirming role added to db
-    console.log(
-      "\nThe " +
-        role_name +
-        " role has been added to the " +
-        answers.dept +
-        " department, with a salary of $" +
-        salary +
-        "\n"
-    );
-
-    // adds new role to db
-    db.query(
-      `INSERT INTO roles (role_name, dept_id, salary) VALUES ("${role_name}", "${dept}", "${salary}")`
-    ),
-      (err, rows) => {
-        if (err) throw err;
-      };
-
-    // option to restart
-    inquirer.prompt(continuePrompt).then((answer) => {
-      var choice = answer.choice;
-      if ((choice = "Yes")) {
-        initInquire();
-      } else {
-        quit();
+      // DO I REALLY NEED THIS SWITCH CASE FOR DEPT? / changing string to int
+      switch (answers.dept) {
+        case "Reception":
+          dept = 1;
+          break;
+        case "Human Resources":
+          dept = 2;
+          break;
+        case "Management":
+          dept = 3;
+          break;
+        case "Design":
+          dept = 4;
+          break;
+        case "Production":
+          dept = 5;
+          break;
+        case "Marketing":
+          dept = 6;
+          break;
+        case "Sales":
+          dept = 7;
+          break;
+        default:
+          dept = 8;
+          break;
       }
+      var salary = answers.salary;
+
+      // confirming role added to db
+      console.log(
+        "\nThe " +
+          role_name +
+          " role has been added to the " +
+          answers.dept +
+          " department, with a salary of $" +
+          salary +
+          "\n"
+      );
+
+      // adds new role to db
+      db.query(
+        `INSERT INTO roles (role_name, dept_id, salary) VALUES ("${role_name}", "${dept}", "${salary}")`
+      ),
+        (err, rows) => {
+          if (err) throw err;
+        };
+
+      // option to restart
+      inquirer.prompt(continuePrompt).then((answer) => {
+        var choice = answer.choice;
+        if ((choice = "Yes")) {
+          initInquire();
+        } else {
+          quit();
+        }
+      });
     });
-  });
 }
 
-// Asks for new employee's first name, last name, job title,
-const addEmployeePrompts = [
-  {
-    type: "input",
-    message: "What is the employee's first name?",
-    name: "first_name",
-  },
-  {
-    type: "input",
-    message: "What is the employee's last name?",
-    name: "last_name",
-  },
-  {
-    type: "list",
-    message: "What is the employees job title?",
-    choices: [
-      "Receptionist",
-      "HR Manager",
-      "General Manager",
-      "Assistant Manager",
-      "Associate",
-      "Intern",
-      "Art Director",
-      "Designer",
-      "Production Coordinator",
-      "Production Assistant",
-      "Marketing Director",
-      "Social Media Coordinator",
-      "Head of Sales",
-      "Sales Manager",
-      "Warehouse Manager",
-      "Warehouse Clerk",
-    ],
-    name: "role_name",
-  },
-  // NEEDS TO AUTOMATICALLY KNOW DEPT / SALARY / MANAGER FOR EACH ROLE!!
-  // {
-  //   type: "input",
-  //   message: "The role is in which department?",
-  //   name: "dept",
-  // },
-  // {
-  //   type: "input",
-  //   message: "What is salary for this position?",
-  //   name: "salary",
-  // },
-  // {
-  //   type: "input",
-  //   message: "Who is this role's direct manager?",
-  //   name: "manager",
-  // },
-];
 // Function to add new employee
 function addEmployee() {
-  inquirer.prompt(addEmployeePrompts).then((answers) => {
-    var first_name = answers.first_name;
-    var last_name = answers.last_name;
-    var role_name = answers.role_name;
-    // var dept = answers.dept;
-    // var salary = answers.salary;
-    // var manager = answers.
-    console.log(
-      "\n" +
-        first_name +
-        " " +
-        last_name +
-        "has been added as a new " +
-        role_name +
-        " in the database\n"
-    );
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the employee's first name?",
+        name: "first_name",
+      },
+      {
+        type: "input",
+        message: "What is the employee's last name?",
+        name: "last_name",
+      },
+      {
+        type: "list",
+        message: "What is the employees job title?",
+        choices: [
+          "Receptionist",
+          "HR Manager",
+          "General Manager",
+          "Assistant Manager",
+          "Associate",
+          "Intern",
+          "Art Director",
+          "Designer",
+          "Production Coordinator",
+          "Production Assistant",
+          "Marketing Director",
+          "Social Media Coordinator",
+          "Head of Sales",
+          "Sales Manager",
+          "Warehouse Manager",
+          "Warehouse Clerk",
+        ],
+        name: "role_name",
+      },
+      // NEEDS TO AUTOMATICALLY KNOW DEPT / SALARY / MANAGER FOR EACH ROLE!!
+      // {
+      //   type: "input",
+      //   message: "The role is in which department?",
+      //   name: "dept",
+      // },
+      // {
+      //   type: "input",
+      //   message: "What is salary for this position?",
+      //   name: "salary",
+      // },
+      // {
+      //   type: "input",
+      //   message: "Who is this role's direct manager?",
+      //   name: "manager",
+      // },
+    ])
+    .then((answers) => {
+      var first_name = answers.first_name;
+      var last_name = answers.last_name;
+      var role_name = answers.role_name;
+      // var dept = answers.dept;
+      // var salary = answers.salary;
+      // var manager = answers.manager;
+      console.log(
+        "\n" +
+          first_name +
+          " " +
+          last_name +
+          "has been added as a new " +
+          role_name +
+          " in the database\n"
+      );
 
-    // adds new employee to db
-    db.query(
-      `INSERT INTO employees (first_name, last_name, role_id, manager) VALUES ("${first_name}", "${last_name}", "${salary}")`
-    ),
-      (err, rows) => {
-        if (err) throw err;
-      };
+      // adds new employee to db
+      db.query(
+        `INSERT INTO employees (first_name, last_name, role_id, manager) VALUES ("${first_name}", "${last_name}", "${salary}")`
+      ),
+        (err, rows) => {
+          if (err) throw err;
+        };
 
-    // option to restart
-    inquirer.prompt(continuePrompt).then((answer) => {
-      var choice = answer.choice;
-      if ((choice = "Yes")) {
-        initInquire();
-      } else {
-        quit();
-      }
+      // option to restart
+      inquirer.prompt(continuePrompt).then((answer) => {
+        var choice = answer.choice;
+        if ((choice = "Yes")) {
+          initInquire();
+        } else {
+          quit();
+        }
+      });
     });
-  });
 }
 
 // Function to update any employee
