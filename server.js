@@ -203,8 +203,8 @@ const addRolePrompts = [
       "Marketing",
       "Sales",
       "Warehouse",
-      // how do we include newly added departments to this prompt?!
     ],
+    // choices: departmentChoices,
     name: "dept",
   },
   {
@@ -215,8 +215,18 @@ const addRolePrompts = [
 ];
 // Function to add new role
 function addRoles() {
+  // let departmentChoices = [];
+  // db.query("SELECT * FROM departments", (err, data) => {
+  //   if (err) throw err;
+
+  //   departmentChoices = data.map((dept) => ({
+  //     name: department.name,
+  //     value: department.id,
+  //   })),
+
   inquirer.prompt(addRolePrompts).then((answers) => {
     var role_name = answers.role_name;
+    // DO I REALLY NEED THIS SWITCH CASE?
     switch (answers.dept) {
       case "Reception":
         dept = 1;
