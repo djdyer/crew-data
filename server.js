@@ -194,9 +194,8 @@ function getValues(table, name) {
     // iterate for all the rows in result
     Object.keys(result).forEach(function (key) {
       var row = result[key];
-      // console.log("==>" + name + "_name");
-      f = name + "_name";
-      results.push(row[f]);
+      title = name + "_name";
+      results.push(row[title]);
     });
   });
   return results;
