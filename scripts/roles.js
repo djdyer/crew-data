@@ -1,5 +1,8 @@
 const inquirer = require("inquirer");
-const db = require("db");
+const db = require("../config/connection");
+const showMainMenu = require("../app.js");
+const getValues = require("../helpers/get_values");
+const continuePrompt = require("../helpers/cont_prompt");
 
 // Function to view existing roles
 module.exports.viewRoles = function viewRoles() {
@@ -7,37 +10,23 @@ module.exports.viewRoles = function viewRoles() {
     if (err) throw err;
     console.log("\nROLES\n=====\n");
     console.table(rows);
+
     // option to restart
     inquirer.prompt(continuePrompt).then((answer) => {
-      var choice = answer.choice;
-      if ((choice = "Yes")) {
-        initInquire();
+      var choice = answer.continueOrQuit;
+      if (choice === "Yes") {
+        showMainMenu.showMainMenu();
       } else {
-        quit();
+        process.exit();
       }
     });
   });
 };
 
-// Function to provide new results in inquiry choices
-function getValues(table, name) {
-  let results = [];
-  db.query("SELECT * FROM " + table, function (err, result, fields) {
-    if (err) throw err;
-    // iterate for all the rows in result
-    Object.keys(result).forEach(function (key) {
-      var row = result[key];
-      title = name + "_name";
-      results.push(row[title]);
-    });
-  });
-  return results;
-}
-
 // Function to add new role
 module.exports.addRole = function addRole() {
   let departmentChoices = [];
-  departmentChoices = getValues("departments", "dept");
+  departmentChoices = getValues.getValues("departments", "dept");
   inquirer
     .prompt([
       {
@@ -59,7 +48,7 @@ module.exports.addRole = function addRole() {
     ])
     .then((answers) => {
       var role_name = answers.role_name;
-
+      // var dept = answers.dept;
       // DO I REALLY NEED THIS SWITCH CASE FOR DEPT? / changing string to int
       switch (answers.dept) {
         case "Reception":
@@ -110,11 +99,11 @@ module.exports.addRole = function addRole() {
 
       // option to restart
       inquirer.prompt(continuePrompt).then((answer) => {
-        var choice = answer.choice;
-        if ((choice = "Yes")) {
-          initInquire();
+        var choice = answer.continueOrQuit;
+        if (choice === "Yes") {
+          showMainMenu.showMainMenu();
         } else {
-          quit();
+          process.exit();
         }
       });
     });

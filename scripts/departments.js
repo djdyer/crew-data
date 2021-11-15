@@ -1,5 +1,7 @@
 const inquirer = require("inquirer");
-const db = require("db");
+const db = require("../config/connection");
+const showMainMenu = require("../app.js");
+const continuePrompt = require("../helpers/cont_prompt");
 
 // Function to view existing departments
 module.exports.viewDepts = function viewDepts() {
@@ -7,18 +9,20 @@ module.exports.viewDepts = function viewDepts() {
     if (err) throw err;
     console.log("\nDEPARTMENTS\n===========\n");
     console.table(rows);
+
     // option to restart
     inquirer.prompt(continuePrompt).then((answer) => {
-      var choice = answer.choice;
-      if ((choice = "Yes")) {
-        initInquire();
+      var choice = answer.continueOrQuit;
+      if (choice === "Yes") {
+        showMainMenu.showMainMenu();
       } else {
-        quit();
+        process.exit();
       }
     });
   });
 };
 
+// Function to add a new department
 module.exports.addDept = function addDept() {
   inquirer
     .prompt([
@@ -39,11 +43,11 @@ module.exports.addDept = function addDept() {
         };
       // option to restart
       inquirer.prompt(continuePrompt).then((answer) => {
-        var choice = answer.choice;
-        if ((choice = "Yes")) {
-          initInquire();
+        var choice = answer.continueOrQuit;
+        if (choice === "Yes") {
+          showMainMenu.showMainMenu();
         } else {
-          quit();
+          process.exit();
         }
       });
     });

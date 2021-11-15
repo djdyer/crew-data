@@ -1,5 +1,8 @@
 const inquirer = require("inquirer");
-const db = require("db");
+const db = require("../config/connection");
+const showMainMenu = require("../app.js");
+const getValues = require("../helpers/get_values");
+const continuePrompt = require("../helpers/cont_prompt");
 
 // Function to view current employees
 module.exports.viewEmployees = function viewEmployees() {
@@ -9,37 +12,24 @@ module.exports.viewEmployees = function viewEmployees() {
       if (err) throw err;
       console.log("\nEMPLOYEES\n=========\n");
       console.table(rows);
+
       // option to restart
       inquirer.prompt(continuePrompt).then((answer) => {
-        var choice = answer.choice;
-        if ((choice = "Yes")) {
-          initInquire();
+        var choice = answer.continueOrQuit;
+        if (choice === "Yes") {
+          showMainMenu.showMainMenu();
         } else {
-          quit();
+          process.exit();
         }
       });
     }
   );
 };
 
-// Function to provide new results in inquiry choices
-// function getValues(table, name) {
-//     let results = [];
-//     db.query("SELECT * FROM " + table, function (err, result, fields) {
-//       if (err) throw err;
-
-//       // iterate for all the rows in result
-//       Object.keys(result).forEach(function (key) {
-//         var row = result[key];
-//         title = name + "_name";
-//         results.push(row[title]);
-//       });
-//     });
-//     return results;
-//   }
-
 // Function to add new employee
 module.exports.addEmployee = function addEmployee() {
+  let roleChoices = [];
+  roleChoices = getValues.getValues("roles", "role_name");
   inquirer
     .prompt([
       {
@@ -55,24 +45,7 @@ module.exports.addEmployee = function addEmployee() {
       {
         type: "list",
         message: "What is the employees job title?",
-        choices: [
-          "Receptionist",
-          "HR Manager",
-          "General Manager",
-          "Assistant Manager",
-          "Associate",
-          "Intern",
-          "Art Director",
-          "Designer",
-          "Production Coordinator",
-          "Production Assistant",
-          "Marketing Director",
-          "Social Media Coordinator",
-          "Head of Sales",
-          "Sales Manager",
-          "Warehouse Manager",
-          "Warehouse Clerk",
-        ],
+        choices: roleChoices,
         name: "role_name",
       },
       // NEEDS TO AUTOMATICALLY KNOW DEPT / SALARY / MANAGER FOR EACH ROLE!!
@@ -119,11 +92,11 @@ module.exports.addEmployee = function addEmployee() {
 
       // option to restart
       inquirer.prompt(continuePrompt).then((answer) => {
-        var choice = answer.choice;
-        if ((choice = "Yes")) {
-          initInquire();
+        var choice = answer.continueOrQuit;
+        if (choice === "Yes") {
+          showMainMenu.showMainMenu();
         } else {
-          quit();
+          process.exit();
         }
       });
     });

@@ -1,4 +1,3 @@
-const mysql = require("mysql2");
 const cTable = require("console.table");
 const inquirer = require("inquirer");
 const { viewDepts, addDept } = require("./scripts/departments");
@@ -6,7 +5,7 @@ const { viewRoles, addRole } = require("./scripts/roles");
 const { viewEmployees, addEmployee } = require("./scripts/employees");
 
 // Initialize
-function initInquire() {
+function showMainMenu() {
   console.log("\nWelcome to Crew Data\n====================\n");
   // MAIN MENU
   inquirer
@@ -44,7 +43,7 @@ function initInquire() {
           addDept();
           break;
         case "Add Role":
-          addRoles();
+          addRole();
           break;
         case "Add Employee":
           addEmployee();
@@ -53,22 +52,11 @@ function initInquire() {
           moreOptions();
           break;
         default:
-          quit();
-          // DOES NOT ACTUALLY QUIT APP
+          process.exit();
           break;
       }
     });
 }
-
-// Last prompt to continue or quit
-const continuePrompt = [
-  {
-    type: "list",
-    message: "\nWould you like to continue?",
-    choices: ["Yes", "No"],
-    name: "continueOrQuit",
-  },
-];
 
 // Function to update any employee
 function moreOptions() {
@@ -78,16 +66,18 @@ function moreOptions() {
     // hint
     // select employees.first_name, roles.role_name, roles.salary from employees inner join roles on employees.role_id = roles.id
   );
+
+  // option to restart
   inquirer.prompt(continuePrompt).then((answer) => {
     var choice = answer.choice;
-    if ((choice = "Yes")) {
-      initInquire();
+    if (choice === "Yes") {
+      showMainMenu();
     } else {
-      quit();
+      process.exit();
     }
   });
 }
 
-function quit() {
-  console.log("figure out how to quit!");
-}
+showMainMenu();
+
+module.exports.showMainMenu = showMainMenu;
