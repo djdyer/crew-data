@@ -62,9 +62,7 @@ module.exports.addRole = function addRole() {
           "\n"
       );
 
-      let id = [];
-
-      db.query(`SELECT dept_id FROM departments`, (err, deptIds) => {
+      db.query(`SELECT id FROM departments`, (err, deptIds) => {
         if (err) throw err;
         console.table(deptIds);
         const id = deptIds;
