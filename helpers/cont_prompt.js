@@ -3,7 +3,7 @@ const continuePrompt = [
   {
     type: "list",
     message: "\nWould you like to continue?",
-    choices: ["Yes", "No"],
+    choices: ["Yes", "No\n"],
     name: "continueOrQuit",
   },
 ];

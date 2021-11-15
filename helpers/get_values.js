@@ -1,5 +1,4 @@
 const db = require("../config/connection");
-const cTable = require("console.table");
 
 module.exports.getValues = function getValues(table, name) {
   let results = [];

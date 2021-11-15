@@ -77,5 +77,3 @@ VALUES ("Erica", "Collette",  1, "Joey Gonzales"),
        ("Bill", "Cramer", 16, "Ronald Ortiz"),
        ("Tony", "Rodriguez", 16, "Ronald Ortiz");
 
-
--- You might want to use a separate file that contains functions for performing specific SQL queries you'll need to use. A constructor function or class could be helpful for organizing these. 

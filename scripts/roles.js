@@ -48,34 +48,7 @@ module.exports.addRole = function addRole() {
     ])
     .then((answers) => {
       var role_name = answers.role_name;
-      // var dept = answers.dept;
-      // DO I REALLY NEED THIS SWITCH CASE FOR DEPT? / changing string to int
-      switch (answers.dept) {
-        case "Reception":
-          dept = 1;
-          break;
-        case "Human Resources":
-          dept = 2;
-          break;
-        case "Management":
-          dept = 3;
-          break;
-        case "Design":
-          dept = 4;
-          break;
-        case "Production":
-          dept = 5;
-          break;
-        case "Marketing":
-          dept = 6;
-          break;
-        case "Sales":
-          dept = 7;
-          break;
-        default:
-          dept = 8;
-          break;
-      }
+      var dept = answers.dept;
       var salary = answers.salary;
 
       // confirming role added to db
@@ -83,19 +56,27 @@ module.exports.addRole = function addRole() {
         "\nThe " +
           role_name +
           " role has been added to the " +
-          answers.dept +
+          dept +
           " department, with a salary of $" +
           salary +
           "\n"
       );
 
-      // adds new role to db
-      db.query(
-        `INSERT INTO roles (role_name, dept_id, salary) VALUES ("${role_name}", "${dept}", "${salary}")`
-      ),
-        (err, rows) => {
-          if (err) throw err;
-        };
+      let id = [];
+
+      db.query(`SELECT dept_id FROM departments`, (err, deptIds) => {
+        if (err) throw err;
+        console.table(deptIds);
+        const id = deptIds;
+
+        // adds new role to db
+        db.query(
+          `INSERT INTO roles (role_name, dept_id, salary) VALUES ("${role_name}", "${id}", "${salary}")`
+        ),
+          (err, deptIds) => {
+            if (err) throw err;
+          };
+      });
 
       // option to restart
       inquirer.prompt(continuePrompt).then((answer) => {
