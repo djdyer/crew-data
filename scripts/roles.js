@@ -62,19 +62,22 @@ module.exports.addRole = function addRole() {
           "\n"
       );
 
-      db.query(`SELECT id FROM departments`, (err, deptIds) => {
-        if (err) throw err;
-        console.table(deptIds);
-        const id = deptIds;
+      // Converting department assignment into integer
+      db.query(
+        `SELECT id FROM departments WHERE dept_name = "${answers.dept}"`,
+        (err, deptIds) => {
+          if (err) throw err;
+          const id = deptIds[0].id;
 
-        // adds new role to db
-        db.query(
-          `INSERT INTO roles (role_name, dept_id, salary) VALUES ("${role_name}", "${id}", "${salary}")`
-        ),
-          (err, deptIds) => {
-            if (err) throw err;
-          };
-      });
+          // adds new role to db
+          db.query(
+            `INSERT INTO roles (role_name, dept_id, salary) VALUES ("${role_name}", "${id}", "${salary}")`
+          ),
+            (err, deptIds) => {
+              if (err) throw err;
+            };
+        }
+      );
 
       // option to restart
       inquirer.prompt(continuePrompt).then((answer) => {
