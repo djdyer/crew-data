@@ -42,12 +42,6 @@ SO THAT I can organize and plan my business
 
 ⬇️
 
-Application will run in the command-line with:
-
-```
-node app
-```
-
 Must first launch mySQL server with the following commands:
 
 ```
@@ -58,10 +52,15 @@ quit
 ..
 ```
 
+Application will then run in the command-line with:
+
+```
+node app
+```
+
 Employing the following technology:
 
-[<img src="./assets/images/node.svg" height="20px">](https://nodejs.org/en/docs/) [<img src="./assets/images/npm.svg" height="20px">](https://www.npmjs.com/) [<img src="./assets/images/inquirer.svg" height="20px">](https://www.npmjs.com/package/inquirer)  
-[<img src="./assets/images/mysql.svg" height="20px">](https://www.npmjs.com/package/mysql2) [<img src="./assets/images/console.table.svg" height="20px">](https://www.npmjs.com/package/console.table.svg/)
+[<img src="./assets/images/node.svg" height="20px">](https://nodejs.org/en/docs/)[<img src="./assets/images/npm.svg" height="20px">](https://www.npmjs.com/)[<img src="./assets/images/inquirer.svg" height="20px">](https://www.npmjs.com/package/inquirer)[<img src="./assets/images/mysql.svg" height="20px">](https://www.npmjs.com/package/mysql2)[<img src="./assets/images/console.table.svg" height="20px">](https://www.npmjs.com/package/console.table.svg/)
 
 <br />
 <br />
