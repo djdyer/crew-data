@@ -29,7 +29,9 @@ module.exports.viewEmployees = function viewEmployees() {
 // Function to add new employee
 module.exports.addEmployee = function addEmployee() {
   let roleChoices = [];
-  roleChoices = getValues.getValues("roles", "role_name");
+  roleChoices = getValues.getValues("roles", "role");
+  let managerChoices = [];
+  managerChoices = getValues.getValues("employees", "first");
   inquirer
     .prompt([
       {
@@ -48,7 +50,14 @@ module.exports.addEmployee = function addEmployee() {
         choices: roleChoices,
         name: "role_name",
       },
-      // NEEDS TO AUTOMATICALLY KNOW DEPT / SALARY / MANAGER FOR EACH ROLE!!
+      {
+        type: "list",
+        message: "Who is the employees manager?",
+        choices: managerChoices,
+        name: "manager_name",
+      },
+
+      // NEEDS TO AUTOMATICALLY KNOW DEPT / SALARY / !!
       // {
       //   type: "input",
       //   message: "The role is in which department?",
@@ -59,19 +68,17 @@ module.exports.addEmployee = function addEmployee() {
       //   message: "What is salary for this position?",
       //   name: "salary",
       // },
-      // {
-      //   type: "input",
-      //   message: "Who is this role's direct manager?",
-      //   name: "manager",
-      // },
     ])
+
     .then((answers) => {
       var first_name = answers.first_name;
       var last_name = answers.last_name;
       var role_name = answers.role_name;
       // var dept = answers.dept;
       // var salary = answers.salary;
-      // var manager = answers.manager;
+      var manager = answers.manager_name;
+
+      // confirming employee added to db
       console.log(
         "\n" +
           first_name +
@@ -79,16 +86,27 @@ module.exports.addEmployee = function addEmployee() {
           last_name +
           "has been added as a new " +
           role_name +
-          " in the database\n"
+          " supervised by " +
+          manager +
+          "\n"
       );
 
-      // adds new employee to db
+      // Converting manager assignment into integer
       db.query(
-        `INSERT INTO employees (first_name, last_name, role_id, manager) VALUES ("${first_name}", "${last_name}", "${salary}")`
-      ),
-        (err, rows) => {
+        `SELECT id FROM employees WHERE first_name = "${answers.first_name}"`,
+        (err, employeeId) => {
           if (err) throw err;
-        };
+          const id = employeeId[0].id;
+
+          // adds new employee to db
+          db.query(
+            `INSERT INTO employees (first_name, last_name, role_id, manager) VALUES ("${first_name}", "${last_name}", "${role_name}", "${id}")`
+          ),
+            (err, employeeId) => {
+              if (err) throw err;
+            };
+        }
+      );
 
       // option to restart
       inquirer.prompt(continuePrompt).then((answer) => {

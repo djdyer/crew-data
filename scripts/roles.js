@@ -6,21 +6,24 @@ const continuePrompt = require("../helpers/cont_prompt");
 
 // Function to view existing roles
 module.exports.viewRoles = function viewRoles() {
-  db.query("SELECT * FROM roles", (err, rows) => {
-    if (err) throw err;
-    console.log("\nROLES\n=====\n");
-    console.table(rows);
+  db.query(
+    "SELECT roles.id, roles.role_name, departments.dept_name, roles.salary FROM roles JOIN departments ON roles.id = departments.id",
+    (err, rows) => {
+      if (err) throw err;
+      console.log("\nROLES\n=====\n");
+      console.table(rows);
 
-    // option to restart
-    inquirer.prompt(continuePrompt).then((answer) => {
-      var choice = answer.continueOrQuit;
-      if (choice === "Yes") {
-        showMainMenu.showMainMenu();
-      } else {
-        process.exit();
-      }
-    });
-  });
+      // option to restart
+      inquirer.prompt(continuePrompt).then((answer) => {
+        var choice = answer.continueOrQuit;
+        if (choice === "Yes") {
+          showMainMenu.showMainMenu();
+        } else {
+          process.exit();
+        }
+      });
+    }
+  );
 };
 
 // Function to add new role
