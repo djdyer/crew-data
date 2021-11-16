@@ -1,6 +1,6 @@
 const cTable = require("console.table");
 const inquirer = require("inquirer");
-const { viewDepts, addDept } = require("./scripts/departments");
+const { viewDepts, addDept, deleteDept } = require("./scripts/departments");
 const { viewRoles, addRole } = require("./scripts/roles");
 const { viewEmployees, addEmployee } = require("./scripts/employees");
 
@@ -60,22 +60,54 @@ function showMainMenu() {
 
 // Function to update any employee
 function moreOptions() {
-  console.log(
-    "figure out how to update an employee's manager. Filter employee by manager and department. Delete any department, role, or employee. View total utilized budget per department"
-
-    // hint
-    // select employees.first_name, roles.role_name, roles.salary from employees inner join roles on employees.role_id = roles.id
-  );
-
-  // option to restart
-  inquirer.prompt(continuePrompt).then((answer) => {
-    var choice = answer.choice;
-    if (choice === "Yes") {
-      showMainMenu();
-    } else {
-      process.exit();
-    }
-  });
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "\nWhat else would you like to do?",
+        choices: [
+          "Delete Department",
+          "Delete Role",
+          "Delete Employee",
+          "Update Employee Manager",
+          "Filter Employees by Manager",
+          "Filter Employee by Department",
+          "Show Utilized Budget by Department",
+          "Quit",
+        ],
+        name: "choice",
+      },
+    ])
+    // Switch case with choice
+    .then((answer) => {
+      var choice = answer.choice;
+      switch (choice) {
+        case "Delete Department":
+          deleteDept();
+          break;
+        case "Delete Role":
+          deleteRole();
+          break;
+        case "Delete Employee":
+          deleteEmployee();
+          break;
+        case "Update Employee by Manager":
+          updateEmpMan();
+          break;
+        case "Filter Employees by Manager":
+          filterByMan();
+          break;
+        case "Filter Employees by Department":
+          filterByDept();
+          break;
+        case "Show Utilized Budget by Department":
+          showBudget();
+          break;
+        default:
+          process.exit();
+          break;
+      }
+    });
 }
 
 showMainMenu();

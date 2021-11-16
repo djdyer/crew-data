@@ -7,7 +7,7 @@ const continuePrompt = require("../helpers/cont_prompt");
 // Function to view existing roles
 module.exports.viewRoles = function viewRoles() {
   db.query(
-    "SELECT roles.id, roles.role_name, departments.dept_name, roles.salary FROM roles JOIN departments ON roles.id = departments.id",
+    "SELECT roles.id, roles.role_name, departments.dept_name, roles.salary FROM roles JOIN departments ON roles.dept_id = departments.id ORDER BY id ASC",
     (err, rows) => {
       if (err) throw err;
       console.log("\nROLES\n=====\n");
@@ -69,7 +69,6 @@ module.exports.addRole = function addRole() {
       db.query(
         `SELECT id FROM departments WHERE dept_name = "${answers.dept}"`,
         (err, deptIds) => {
-          if (err) throw err;
           const id = deptIds[0].id;
 
           // adds new role to db

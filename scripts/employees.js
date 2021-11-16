@@ -7,7 +7,11 @@ const continuePrompt = require("../helpers/cont_prompt");
 // Function to view current employees
 module.exports.viewEmployees = function viewEmployees() {
   db.query(
-    "SELECT employees.id, employees.first_name, employees.last_name, roles.role_name, roles.dept_id, roles.salary, employees.manager FROM employees JOIN roles ON employees.role_id = roles.id",
+    `SELECT emp.id, emp.first_name, emp.last_name, roles.role_name, departments.dept_name, roles.salary, CONCAT(man.first_name, " ", man.last_name) AS manager
+  FROM employees emp
+  LEFT JOIN roles ON emp.role_id = roles.id
+  LEFT JOIN departments ON roles.dept_id = departments.id
+  LEFT JOIN employees man ON emp.manager = man.id ORDER BY id ASC`,
     (err, rows) => {
       if (err) throw err;
       console.log("\nEMPLOYEES\n=========\n");
@@ -30,8 +34,12 @@ module.exports.viewEmployees = function viewEmployees() {
 module.exports.addEmployee = function addEmployee() {
   let roleChoices = [];
   roleChoices = getValues.getValues("roles", "role");
+
   let managerChoices = [];
-  managerChoices = getValues.getValues("employees", "first");
+  managerChoices = getValues.getValues("employees", "last");
+
+  // NEED FIRST NAME CONCATINATION!!!
+
   inquirer
     .prompt([
       {
@@ -56,26 +64,12 @@ module.exports.addEmployee = function addEmployee() {
         choices: managerChoices,
         name: "manager_name",
       },
-
-      // NEEDS TO AUTOMATICALLY KNOW DEPT / SALARY / !!
-      // {
-      //   type: "input",
-      //   message: "The role is in which department?",
-      //   name: "dept",
-      // },
-      // {
-      //   type: "input",
-      //   message: "What is salary for this position?",
-      //   name: "salary",
-      // },
     ])
 
     .then((answers) => {
       var first_name = answers.first_name;
       var last_name = answers.last_name;
       var role_name = answers.role_name;
-      // var dept = answers.dept;
-      // var salary = answers.salary;
       var manager = answers.manager_name;
 
       // confirming employee added to db
@@ -93,18 +87,27 @@ module.exports.addEmployee = function addEmployee() {
 
       // Converting manager assignment into integer
       db.query(
-        `SELECT id FROM employees WHERE first_name = "${answers.first_name}"`,
-        (err, employeeId) => {
-          if (err) throw err;
-          const id = employeeId[0].id;
+        `SELECT id FROM roles WHERE role_name = "${answers.role_name}"`,
+        (err, roleId) => {
+          const role = roleId[0].id;
+          console.log(role);
 
-          // adds new employee to db
+          // Converting manager assignment into integer
           db.query(
-            `INSERT INTO employees (first_name, last_name, role_id, manager) VALUES ("${first_name}", "${last_name}", "${role_name}", "${id}")`
-          ),
+            `SELECT id FROM employees WHERE first_name = "${answers.manager_name}"`,
             (err, employeeId) => {
-              if (err) throw err;
-            };
+              const id = employeeId[0].id;
+              console.log(id);
+
+              // adds new employee to db
+              db.query(
+                `INSERT INTO employees (first_name, last_name, role_id, manager) VALUES ("${first_name}", "${last_name}", "${role}", "${id}")`
+              ),
+                (err, employeeId) => {
+                  if (err) throw err;
+                };
+            }
+          );
         }
       );
 
