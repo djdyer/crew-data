@@ -132,10 +132,10 @@ Development efforts most often include guidance from Jedi Master:
 <a href= "https://github.com/CChampness"><img src=
 "https://avatars.githubusercontent.com/u/87551272?v=4" width="50px"/></a>
 
-Working alongside the likes of:
-**Olsen Ogouchi**
+Additional collaboration with:
+**Julius Markauskas**
 
-<a href="https://github.com/Chrisolsen1993"><img src="https://chrisolsen1993.github.io/Updated-Portfolio/assets/images/avatar.jpeg" width="50px"/></a>
+<a href="https://github.com/Juliusm9791"><img src="https://avatars.githubusercontent.com/u/88810468?v=4" width="50px"/></a>
 
 <br />
 
