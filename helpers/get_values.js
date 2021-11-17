@@ -2,7 +2,6 @@ const db = require("../config/connection");
 
 module.exports.getValues = function getValues(table, name) {
   let results = [];
-  // console.log("start GetValues(): table: " + table + " name: " + name);
   db.query("SELECT * FROM " + table, function (err, result) {
     if (err) throw err;
 
@@ -13,6 +12,27 @@ module.exports.getValues = function getValues(table, name) {
       results.push(row[title]);
     });
   });
-  // console.log("end GetValues(): results: " + results);
   return results;
 };
+
+// module.exports.getManager = function getManager() {
+//   let results = [];
+//   db.query(
+//     `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`,
+//     function (err, rows) {
+//       if (err) {
+//         console.log("err: " + err);
+//         throw err;
+//       }
+//       console.log(rows);
+
+//       for (var i = 0; rows.length < 0; i++) {
+//       results.push(rows[i]);
+//       }
+
+//       results.push(rows[0].manager);
+//       console.log(results);
+//     }
+//   );
+//   return results;
+// };

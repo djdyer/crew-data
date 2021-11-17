@@ -4,10 +4,10 @@ const showMainMenu = require("../app.js");
 const getValues = require("../helpers/get_values");
 const continuePrompt = require("../helpers/cont_prompt");
 
-// Function to view existing departments
+// Function to view departments
 module.exports.viewDepts = function viewDepts() {
   db.query("SELECT * FROM departments ORDER BY id ASC", (err, rows) => {
-    // displays all departments
+    // displays all existing departments by id and name
     console.log("\nDEPARTMENTS\n===========\n");
     console.table(rows);
 
@@ -17,6 +17,7 @@ module.exports.viewDepts = function viewDepts() {
       if (choice === "Yes") {
         showMainMenu.showMainMenu();
       } else {
+        console.log("\nCrew Data secure...\n\nGOODBYE\n");
         process.exit();
       }
     });
@@ -42,7 +43,9 @@ module.exports.addDept = function addDept() {
         };
 
       // confirmation dept added
-      console.log(dept + " has been added to the departments database.\n");
+      console.log(
+        "\n" + dept + " has been added to the departments database.\n"
+      );
 
       // option to restart
       inquirer.prompt(continuePrompt).then((answer) => {
@@ -50,6 +53,7 @@ module.exports.addDept = function addDept() {
         if (choice === "Yes") {
           showMainMenu.showMainMenu();
         } else {
+          console.log("\nCrew Data secure...\n\nGOODBYE\n");
           process.exit();
         }
       });
@@ -108,6 +112,7 @@ module.exports.deleteDept = function deleteDept() {
         if (choice === "Yes") {
           showMainMenu();
         } else {
+          console.log("\nCrew Data secure...\n\nGOODBYE\n");
           process.exit();
         }
       });

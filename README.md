@@ -83,10 +83,10 @@ Copyright (c) David Dyer [2021]
 
 🕹️
 
-[![](assets/demo/...png)](https://youtu.be/...)
+[![](assets/demo/demo_ss.png)](https://youtu.be/r3SNtPsUMXM)
 
-<img src="./assets/demo/...png" width = "600">
-<img src="./assets/demo/...png" width = "600">
+<img src="./assets/demo/ss1.png" width = "600">
+<img src="./assets/demo/ss2.png" width = "600">
 
 <br />
 <br />

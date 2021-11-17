@@ -20,6 +20,7 @@ module.exports.viewRoles = function viewRoles() {
         if (choice === "Yes") {
           showMainMenu.showMainMenu();
         } else {
+          console.log("\nCrew Data secure...\n\nGOODBYE\n");
           process.exit();
         }
       });
@@ -88,6 +89,7 @@ module.exports.addRole = function addRole() {
         if (choice === "Yes") {
           showMainMenu.showMainMenu();
         } else {
+          console.log("\nCrew Data secure...\n\nGOODBYE\n");
           process.exit();
         }
       });

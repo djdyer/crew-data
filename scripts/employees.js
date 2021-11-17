@@ -1,8 +1,10 @@
 const inquirer = require("inquirer");
 const db = require("../config/connection");
 const showMainMenu = require("../app.js");
-const getValues = require("../helpers/get_values");
 const continuePrompt = require("../helpers/cont_prompt");
+const getValues = require("../helpers/get_values");
+// const getManager = require("../helpers/get_values");
+// const { getValues, getManager } = require("../helpers/get_values");
 
 // Function to view current employees
 module.exports.viewEmployees = function viewEmployees() {
@@ -24,6 +26,7 @@ module.exports.viewEmployees = function viewEmployees() {
         if (choice === "Yes") {
           showMainMenu.showMainMenu();
         } else {
+          console.log("\nCrew Data secure...\n\nGOODBYE\n");
           process.exit();
         }
       });
@@ -37,10 +40,13 @@ module.exports.addEmployee = function addEmployee() {
   roleChoices = getValues.getValues("roles", "role");
 
   let managerChoices = [];
+  managerChoices = getValues.getValues("employees", "first");
+
   // db.query(
   //   `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`
   // ),
   //   (err, managers) => {
+  //     console.log(managers);
   //     managerChoices.push(...managers);
   //     console.log(managerChoices);
   //     if (err) throw err;
@@ -58,7 +64,7 @@ module.exports.addEmployee = function addEmployee() {
   //     if (err) throw err;
   //   };
 
-  managerChoices = getValues.getValues("employees", "first", "last");
+  // managerChoices = getValues.getValues("employees", "first");
   // managerLast = getValues.getValues("employees", "last");
   // managerChoices = managerFirst + " " + managerLast;
 
@@ -125,9 +131,9 @@ module.exports.addEmployee = function addEmployee() {
           first_name +
           " " +
           last_name +
-          "has been added as a new " +
+          " has been added as a new " +
           role_name +
-          " supervised by " +
+          ", supervised by " +
           manager +
           "\n"
       );
@@ -138,6 +144,7 @@ module.exports.addEmployee = function addEmployee() {
         if (choice === "Yes") {
           showMainMenu.showMainMenu();
         } else {
+          console.log("\nCrew Data secure...\n\nGOODBYE\n");
           process.exit();
         }
       });

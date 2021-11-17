@@ -71,8 +71,8 @@ function moreOptions() {
           "Delete Employee",
           "Update Employee Manager",
           "Filter Employees by Manager",
-          "Filter Employee by Department",
-          "Show Utilized Budget by Department",
+          "Filter Employees by Department",
+          "Show Utilized Budget per Department",
           "Quit",
         ],
         name: "choice",
@@ -104,6 +104,7 @@ function moreOptions() {
           showBudget();
           break;
         default:
+          console.log("\nCrew Data secure...\n\nGOODBYE\n");
           process.exit();
       }
     });
