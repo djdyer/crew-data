@@ -14,6 +14,7 @@ module.exports.viewEmployees = function viewEmployees() {
   LEFT JOIN employees man ON emp.manager = man.id ORDER BY id ASC`,
     (err, rows) => {
       if (err) throw err;
+      // displays all existing employees by id, first-last name, role, department, manager, salary
       console.log("\nEMPLOYEES\n=========\n");
       console.table(rows);
 
@@ -35,9 +36,7 @@ module.exports.addEmployee = function addEmployee() {
   let roleChoices = [];
   roleChoices = getValues.getValues("roles", "role");
 
-  // let managerChoices = [];
-  let managerChoices;
-
+  let managerChoices = [];
   // db.query(
   //   `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`
   // ),
@@ -47,15 +46,19 @@ module.exports.addEmployee = function addEmployee() {
   //     if (err) throw err;
   //   };
 
-  db.query(`SELECT * FROM employees`).then((err, managers) => {
-    managerChoices = managers.map((manager) => {
-      return manager.first_name + " " + manager.last_name;
-    });
-    console.log(managerChoices);
-    if (err) throw err;
-  });
+  // let managerChoices;
+  // db.query(
+  //   `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`
+  // ),
+  //   (err, managers) => {
+  //     managerChoices = managers.map((manager) => {
+  //       return manager.first_name + " " + manager.last_name;
+  //     });
+  //     console.log(managerChoices);
+  //     if (err) throw err;
+  //   };
 
-  // managerFirst = getValues.getValues("employees", "first");
+  managerChoices = getValues.getValues("employees", "first", "last");
   // managerLast = getValues.getValues("employees", "last");
   // managerChoices = managerFirst + " " + managerLast;
 
@@ -92,32 +95,17 @@ module.exports.addEmployee = function addEmployee() {
       var role_name = answers.role_name;
       var manager = answers.manager_name;
 
-      // confirming employee added to db
-      console.log(
-        "\n" +
-          first_name +
-          " " +
-          last_name +
-          "has been added as a new " +
-          role_name +
-          " supervised by " +
-          manager +
-          "\n"
-      );
-
-      // Converting manager assignment into integer
+      // Converting role name to role id
       db.query(
         `SELECT id FROM roles WHERE role_name = "${answers.role_name}"`,
         (err, roleId) => {
           const role = roleId[0].id;
-          console.log(role);
 
-          // Converting manager assignment into integer
+          // Converting manager assignment into employee id
           db.query(
             `SELECT id FROM employees WHERE first_name = "${answers.manager_name}"`,
             (err, employeeId) => {
               const id = employeeId[0].id;
-              console.log(id);
 
               // adds new employee to db
               db.query(
@@ -129,6 +117,19 @@ module.exports.addEmployee = function addEmployee() {
             }
           );
         }
+      );
+
+      // confirming employee added to db
+      console.log(
+        "\n" +
+          first_name +
+          " " +
+          last_name +
+          "has been added as a new " +
+          role_name +
+          " supervised by " +
+          manager +
+          "\n"
       );
 
       // option to restart

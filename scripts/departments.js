@@ -7,6 +7,7 @@ const continuePrompt = require("../helpers/cont_prompt");
 // Function to view existing departments
 module.exports.viewDepts = function viewDepts() {
   db.query("SELECT * FROM departments ORDER BY id ASC", (err, rows) => {
+    // displays all departments
     console.log("\nDEPARTMENTS\n===========\n");
     console.table(rows);
 
@@ -34,13 +35,15 @@ module.exports.addDept = function addDept() {
     ])
     .then((answer) => {
       var dept = answer.dept_name;
-      // confirmation dept added
-      console.log(dept + " has been added to the departments database.\n");
       // adds new dept to db
       db.query(`INSERT INTO departments (dept_name) VALUES ("${dept}")`),
         (err, rows) => {
           if (err) throw err;
         };
+
+      // confirmation dept added
+      console.log(dept + " has been added to the departments database.\n");
+
       // option to restart
       inquirer.prompt(continuePrompt).then((answer) => {
         var choice = answer.continueOrQuit;
@@ -53,6 +56,7 @@ module.exports.addDept = function addDept() {
     });
 };
 
+// Function to delete any department
 module.exports.deleteDept = function deleteDept() {
   let departmentChoices = [];
   departmentChoices = getValues.getValues("departments", "dept");
@@ -79,23 +83,23 @@ module.exports.deleteDept = function deleteDept() {
 
       var deleteDept = answer.dept;
 
-      // confirming department deleted
-      console.log(
-        "\n" + deleteDept + " has been deleted from the departments db " + "\n"
-      );
-
-      // Converting department selection into id
+      // converting department selection into id
       db.query(
         `SELECT id FROM departments WHERE dept_name = "${answer.dept}"`,
         (err, delDept) => {
           const delId = delDept[0].id;
 
-          // deletes dept from db
+          // eletes dept from db
           db.query(`DELETE FROM departments WHERE id = ${delId}`),
             (err, delId) => {
               if (err) throw err;
             };
         }
+      );
+
+      // confirming department deleted
+      console.log(
+        "\n" + deleteDept + " has been deleted from the departments db " + "\n"
       );
 
       // option to restart

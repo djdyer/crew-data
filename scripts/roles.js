@@ -4,12 +4,13 @@ const showMainMenu = require("../app.js");
 const getValues = require("../helpers/get_values");
 const continuePrompt = require("../helpers/cont_prompt");
 
-// Function to view existing roles
+// Function to view roles
 module.exports.viewRoles = function viewRoles() {
   db.query(
     "SELECT roles.id, roles.role_name, departments.dept_name, roles.salary FROM roles JOIN departments ON roles.dept_id = departments.id ORDER BY id ASC",
     (err, rows) => {
       if (err) throw err;
+      // displays all existing roles by id, role name, department name and salary
       console.log("\nROLES\n=====\n");
       console.table(rows);
 
@@ -54,17 +55,6 @@ module.exports.addRole = function addRole() {
       var dept = answers.dept;
       var salary = answers.salary;
 
-      // confirming role added to db
-      console.log(
-        "\nThe " +
-          role_name +
-          " role has been added to the " +
-          dept +
-          " department, with a salary of $" +
-          salary +
-          "\n"
-      );
-
       // Converting department assignment into integer
       db.query(
         `SELECT id FROM departments WHERE dept_name = "${answers.dept}"`,
@@ -79,6 +69,17 @@ module.exports.addRole = function addRole() {
               if (err) throw err;
             };
         }
+      );
+
+      // confirming role added to db
+      console.log(
+        "\nThe " +
+          role_name +
+          " role has been added to the " +
+          dept +
+          " department, with a salary of $" +
+          salary +
+          "\n"
       );
 
       // option to restart
