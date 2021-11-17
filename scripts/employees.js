@@ -35,16 +35,25 @@ module.exports.addEmployee = function addEmployee() {
   let roleChoices = [];
   roleChoices = getValues.getValues("roles", "role");
 
-  let managerChoices = [];
+  // let managerChoices = [];
+  let managerChoices;
 
-  db.query(
-    `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`
-  ),
-    (err, managers) => {
-      managerChoices.push(...managers);
-      console.log(managerChoices);
-      if (err) throw err;
-    };
+  // db.query(
+  //   `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`
+  // ),
+  //   (err, managers) => {
+  //     managerChoices.push(...managers);
+  //     console.log(managerChoices);
+  //     if (err) throw err;
+  //   };
+
+  db.query(`SELECT * FROM employees`).then((err, managers) => {
+    managerChoices = managers.map((manager) => {
+      return manager.first_name + " " + manager.last_name;
+    });
+    console.log(managerChoices);
+    if (err) throw err;
+  });
 
   // managerFirst = getValues.getValues("employees", "first");
   // managerLast = getValues.getValues("employees", "last");
