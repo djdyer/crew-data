@@ -36,9 +36,19 @@ module.exports.addEmployee = function addEmployee() {
   roleChoices = getValues.getValues("roles", "role");
 
   let managerChoices = [];
-  managerChoices = getValues.getValues("employees", "last");
 
-  // NEED FIRST NAME CONCATINATION!!!
+  db.query(
+    `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`
+  ),
+    (err, managers) => {
+      managerChoices.push(...managers);
+      console.log(managerChoices);
+      if (err) throw err;
+    };
+
+  // managerFirst = getValues.getValues("employees", "first");
+  // managerLast = getValues.getValues("employees", "last");
+  // managerChoices = managerFirst + " " + managerLast;
 
   inquirer
     .prompt([
@@ -62,6 +72,7 @@ module.exports.addEmployee = function addEmployee() {
         type: "list",
         message: "Who is the employees manager?",
         choices: managerChoices,
+        // choices: [1, 2, 3],
         name: "manager_name",
       },
     ])

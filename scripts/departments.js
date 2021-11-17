@@ -55,7 +55,7 @@ module.exports.addDept = function addDept() {
 
 module.exports.deleteDept = function deleteDept() {
   let departmentChoices = [];
-  // departmentChoices = getValues.getValues("departments", "dept");
+  departmentChoices = getValues.getValues("departments", "dept");
 
   db.query(`SELECT * FROM departments`, (err, rows) => {
     if (err) throw err;

@@ -58,7 +58,7 @@ function showMainMenu() {
     });
 }
 
-// Function to update any employee
+// Function for MORE menu
 function moreOptions() {
   inquirer
     .prompt([
@@ -105,7 +105,6 @@ function moreOptions() {
           break;
         default:
           process.exit();
-          break;
       }
     });
 }
