@@ -1,8 +1,6 @@
 const inquirer = require("inquirer");
 const db = require("../config/connection");
-const showMainMenu = require("../app.js");
-const getValues = require("../helpers/get_values");
-const continuePrompt = require("../helpers/cont_prompt");
+const continueOrQuit = require("../helpers/cont_prompt");
 
 // Function to view departments
 module.exports.viewDepts = function viewDepts() {
@@ -10,17 +8,7 @@ module.exports.viewDepts = function viewDepts() {
     // displays all existing departments by id and name
     console.log("\nDEPARTMENTS\n===========\n");
     console.table(rows);
-
-    // option to restart
-    inquirer.prompt(continuePrompt).then((answer) => {
-      var choice = answer.continueOrQuit;
-      if (choice === "Yes") {
-        showMainMenu.showMainMenu();
-      } else {
-        console.log("\nCrew Data secure...\n\nGOODBYE\n");
-        process.exit();
-      }
-    });
+    continueOrQuit();
   });
 };
 
@@ -36,85 +24,71 @@ module.exports.addDept = function addDept() {
     ])
     .then((answer) => {
       var dept = answer.dept_name;
+
       // adds new dept to db
       db.query(`INSERT INTO departments (dept_name) VALUES ("${dept}")`),
         (err, rows) => {
           if (err) throw err;
         };
-
       // confirmation dept added
       console.log(
         "\n" + dept + " has been added to the departments database.\n"
       );
 
       // option to restart
-      inquirer.prompt(continuePrompt).then((answer) => {
-        var choice = answer.continueOrQuit;
-        if (choice === "Yes") {
-          showMainMenu.showMainMenu();
-        } else {
-          console.log("\nCrew Data secure...\n\nGOODBYE\n");
-          process.exit();
-        }
-      });
+      continueOrQuit();
     });
 };
 
 // Function to delete any department
 module.exports.deleteDept = function deleteDept() {
   let departmentChoices = [];
-  departmentChoices = getValues.getValues("departments", "dept");
 
-  db.query(`SELECT * FROM departments`, (err, rows) => {
+  db.query("SELECT * FROM departments", function (err, result) {
     if (err) throw err;
-    console.log(rows);
-    const deleteId = rows[0].id;
-    console.log(deleteId);
-  });
 
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        message: "Which Department do you want to delete?",
-        choices: departmentChoices,
-        name: "dept",
-      },
-    ])
-    .then((answer) => {
-      console.log(departmentChoices, "TEST");
-      console.log(answer.dept);
-
-      var deleteDept = answer.dept;
-
-      // converting department selection into id
-      db.query(
-        `SELECT id FROM departments WHERE dept_name = "${answer.dept}"`,
-        (err, delDept) => {
-          const delId = delDept[0].id;
-
-          // eletes dept from db
-          db.query(`DELETE FROM departments WHERE id = ${delId}`),
-            (err, delId) => {
-              if (err) throw err;
-            };
-        }
-      );
-
-      // confirming department deleted
-      console.log(
-        "\n" + deleteDept + " has been deleted from the departments db " + "\n"
-      );
-
-      // option to restart
-      inquirer.prompt(continuePrompt).then((answer) => {
-        var choice = answer.choice;
-        if (choice === "Yes") {
-          showMainMenu();
-        } else {
-          console.log("\nCrew Data secure...\n\nGOODBYE\n");
-          process.exit();
-        }
-      });
+    // iterate for all the rows in result
+    Object.keys(result).forEach(function (key) {
+      var row = result[key];
+      title = "dept_name";
+      departmentChoices.push(row[title]);
     });
+
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          message: "Which Department do you want to delete?",
+          choices: departmentChoices,
+          name: "dept",
+        },
+      ])
+      .then((answer) => {
+        // converting department selection into id
+        db.query(
+          `SELECT id FROM departments WHERE dept_name = "${answer.dept}"`,
+          (err, delDept) => {
+            const delId = delDept[0].id;
+
+            // deletes dept from db
+            db.query(
+              `DELETE FROM departments WHERE id = ${delId}`,
+              (err, delId) => {
+                if (err) throw err;
+
+                // confirming department deleted
+                console.log(
+                  "\n" +
+                    answer.dept +
+                    " has been deleted from the departments db " +
+                    "\n"
+                );
+                // option to restart
+                continueOrQuit();
+              }
+            );
+          }
+        );
+      });
+  });
 };

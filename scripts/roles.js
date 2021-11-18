@@ -1,8 +1,7 @@
 const inquirer = require("inquirer");
 const db = require("../config/connection");
-const showMainMenu = require("../app.js");
 const getValues = require("../helpers/get_values");
-const continuePrompt = require("../helpers/cont_prompt");
+const continueOrQuit = require("../helpers/cont_prompt");
 
 // Function to view roles
 module.exports.viewRoles = function viewRoles() {
@@ -15,15 +14,7 @@ module.exports.viewRoles = function viewRoles() {
       console.table(rows);
 
       // option to restart
-      inquirer.prompt(continuePrompt).then((answer) => {
-        var choice = answer.continueOrQuit;
-        if (choice === "Yes") {
-          showMainMenu.showMainMenu();
-        } else {
-          console.log("\nCrew Data secure...\n\nGOODBYE\n");
-          process.exit();
-        }
-      });
+      continueOrQuit();
     }
   );
 };
@@ -69,29 +60,68 @@ module.exports.addRole = function addRole() {
             (err, deptIds) => {
               if (err) throw err;
             };
+          // confirming role added to db
+          console.log(
+            "\nThe " +
+              role_name +
+              " role has been added to the " +
+              dept +
+              " department, with a salary of $" +
+              salary +
+              "\n"
+          );
+          continueOrQuit();
         }
       );
-
-      // confirming role added to db
-      console.log(
-        "\nThe " +
-          role_name +
-          " role has been added to the " +
-          dept +
-          " department, with a salary of $" +
-          salary +
-          "\n"
-      );
-
-      // option to restart
-      inquirer.prompt(continuePrompt).then((answer) => {
-        var choice = answer.continueOrQuit;
-        if (choice === "Yes") {
-          showMainMenu.showMainMenu();
-        } else {
-          console.log("\nCrew Data secure...\n\nGOODBYE\n");
-          process.exit();
-        }
-      });
     });
+};
+
+// Function to delete any role
+module.exports.deleteRole = function deleteRole() {
+  let roleChoices = [];
+
+  db.query("SELECT * FROM roles", function (err, result) {
+    if (err) throw err;
+
+    // iterate for all the rows in result
+    Object.keys(result).forEach(function (key) {
+      var row = result[key];
+      title = "role_name";
+      roleChoices.push(row[title]);
+    });
+
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          message: "Which Role do you want to delete?",
+          choices: roleChoices,
+          name: "roles",
+        },
+      ])
+      .then((answer) => {
+        // converting role selection into id
+        db.query(
+          `SELECT id FROM roles WHERE role_name = "${answer.roles}"`,
+          (err, delRole) => {
+            const delId = delRole[0].id;
+
+            // deletes dept from db
+            db.query(`DELETE FROM roles WHERE id = ${delId}`, (err, delId) => {
+              if (err) throw err;
+            });
+            // confirming department deleted
+            console.log(
+              "\n" +
+                answer.roles +
+                " has been deleted from the roles db " +
+                "\n"
+            );
+
+            // option to restart
+            continueOrQuit();
+          }
+        );
+      });
+  });
 };

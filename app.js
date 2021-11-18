@@ -1,12 +1,16 @@
 const cTable = require("console.table");
 const inquirer = require("inquirer");
 const { viewDepts, addDept, deleteDept } = require("./scripts/departments");
-const { viewRoles, addRole } = require("./scripts/roles");
-const { viewEmployees, addEmployee } = require("./scripts/employees");
+const { viewRoles, addRole, deleteRole } = require("./scripts/roles");
+const {
+  viewEmployees,
+  addEmployee,
+  deleteEmployee,
+} = require("./scripts/employees");
 
 // Initialize
 function showMainMenu() {
-  console.log("\nWelcome to Crew Data\n====================\n");
+  console.log("\nWELCOME TO CREW DATA\n====================\n");
   // MAIN MENU
   inquirer
     .prompt([
@@ -53,7 +57,6 @@ function showMainMenu() {
           break;
         default:
           process.exit();
-          break;
       }
     });
 }
@@ -92,16 +95,16 @@ function moreOptions() {
           deleteEmployee();
           break;
         case "Update Employee by Manager":
-          updateEmpMan();
+          updateEmpoyeeManager();
           break;
         case "Filter Employees by Manager":
-          filterByMan();
+          filterEmployeeByManager();
           break;
         case "Filter Employees by Department":
-          filterByDept();
+          filterEmployeeByDept();
           break;
         case "Show Utilized Budget by Department":
-          showBudget();
+          showUtilizedBudget();
           break;
         default:
           console.log("\nCrew Data secure...\n\nGOODBYE\n");
@@ -113,3 +116,4 @@ function moreOptions() {
 showMainMenu();
 
 module.exports.showMainMenu = showMainMenu;
+module.exports.moreOptions = moreOptions;

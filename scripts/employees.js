@@ -1,10 +1,8 @@
 const inquirer = require("inquirer");
 const db = require("../config/connection");
-const showMainMenu = require("../app.js");
-const continuePrompt = require("../helpers/cont_prompt");
+const continueOrQuit = require("../helpers/cont_prompt");
 const getValues = require("../helpers/get_values");
-// const getManager = require("../helpers/get_values");
-// const { getValues, getManager } = require("../helpers/get_values");
+const getManager = require("../helpers/get_values");
 
 // Function to view current employees
 module.exports.viewEmployees = function viewEmployees() {
@@ -21,15 +19,7 @@ module.exports.viewEmployees = function viewEmployees() {
       console.table(rows);
 
       // option to restart
-      inquirer.prompt(continuePrompt).then((answer) => {
-        var choice = answer.continueOrQuit;
-        if (choice === "Yes") {
-          showMainMenu.showMainMenu();
-        } else {
-          console.log("\nCrew Data secure...\n\nGOODBYE\n");
-          process.exit();
-        }
-      });
+      continueOrQuit();
     }
   );
 };
@@ -40,33 +30,7 @@ module.exports.addEmployee = function addEmployee() {
   roleChoices = getValues.getValues("roles", "role");
 
   let managerChoices = [];
-  managerChoices = getValues.getValues("employees", "first");
-
-  // db.query(
-  //   `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`
-  // ),
-  //   (err, managers) => {
-  //     console.log(managers);
-  //     managerChoices.push(...managers);
-  //     console.log(managerChoices);
-  //     if (err) throw err;
-  //   };
-
-  // let managerChoices;
-  // db.query(
-  //   `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`
-  // ),
-  //   (err, managers) => {
-  //     managerChoices = managers.map((manager) => {
-  //       return manager.first_name + " " + manager.last_name;
-  //     });
-  //     console.log(managerChoices);
-  //     if (err) throw err;
-  //   };
-
-  // managerChoices = getValues.getValues("employees", "first");
-  // managerLast = getValues.getValues("employees", "last");
-  // managerChoices = managerFirst + " " + managerLast;
+  managerChoices = getManager.getManager();
 
   inquirer
     .prompt([
@@ -90,7 +54,6 @@ module.exports.addEmployee = function addEmployee() {
         type: "list",
         message: "Who is the employees manager?",
         choices: managerChoices,
-        // choices: [1, 2, 3],
         name: "manager_name",
       },
     ])
@@ -109,7 +72,9 @@ module.exports.addEmployee = function addEmployee() {
 
           // Converting manager assignment into employee id
           db.query(
-            `SELECT id FROM employees WHERE first_name = "${answers.manager_name}"`,
+            `SELECT id FROM employees WHERE first_name = "${
+              answers.manager_name.split(" ")[0]
+            }"`,
             (err, employeeId) => {
               const id = employeeId[0].id;
 
@@ -120,33 +85,82 @@ module.exports.addEmployee = function addEmployee() {
                 (err, employeeId) => {
                   if (err) throw err;
                 };
+              // confirming employee added to db
+              console.log(
+                "\n" +
+                  first_name +
+                  " " +
+                  last_name +
+                  " has been added as a new " +
+                  role_name +
+                  ", supervised by " +
+                  manager +
+                  "\n"
+              );
+
+              // option to restart
+              continueOrQuit();
             }
           );
         }
       );
-
-      // confirming employee added to db
-      console.log(
-        "\n" +
-          first_name +
-          " " +
-          last_name +
-          " has been added as a new " +
-          role_name +
-          ", supervised by " +
-          manager +
-          "\n"
-      );
-
-      // option to restart
-      inquirer.prompt(continuePrompt).then((answer) => {
-        var choice = answer.continueOrQuit;
-        if (choice === "Yes") {
-          showMainMenu.showMainMenu();
-        } else {
-          console.log("\nCrew Data secure...\n\nGOODBYE\n");
-          process.exit();
-        }
-      });
     });
+};
+
+// Function to delete any employee
+module.exports.deleteEmployee = function deleteEmployee() {
+  let employeeChoices = [];
+
+  db.query(
+    `SELECT CONCAT(first_name, " ",last_name) AS employees FROM employees`,
+    function (err, result) {
+      if (err) throw err;
+
+      // iterate for all the rows in result
+      Object.keys(result).forEach(function (key) {
+        var row = result[key];
+        title = "employees";
+        employeeChoices.push(row[title]);
+      });
+
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            message: "Which Employee do you want to delete?",
+            choices: employeeChoices,
+            name: "employee",
+          },
+        ])
+        .then((answer) => {
+          // converting role selection into id
+          db.query(
+            `SELECT id FROM employees WHERE first_name = "${
+              answer.employee.split(" ")[0]
+            }"`,
+            (err, delEmployee) => {
+              const delId = delEmployee[0].id;
+
+              // deletes employee from db
+              db.query(
+                `DELETE FROM employees WHERE id = ${delId}`,
+                (err, delId) => {
+                  if (err) throw err;
+                }
+              );
+              // confirming department deleted
+              console.log(
+                "\n" +
+                  answer.employee +
+                  " has been deleted from the employees db " +
+                  "\n"
+              );
+
+              // option to restart
+              continueOrQuit();
+            }
+          );
+        });
+    }
+  );
 };

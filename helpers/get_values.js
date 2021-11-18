@@ -15,24 +15,19 @@ module.exports.getValues = function getValues(table, name) {
   return results;
 };
 
-// module.exports.getManager = function getManager() {
-//   let results = [];
-//   db.query(
-//     `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`,
-//     function (err, rows) {
-//       if (err) {
-//         console.log("err: " + err);
-//         throw err;
-//       }
-//       console.log(rows);
-
-//       for (var i = 0; rows.length < 0; i++) {
-//       results.push(rows[i]);
-//       }
-
-//       results.push(rows[0].manager);
-//       console.log(results);
-//     }
-//   );
-//   return results;
-// };
+module.exports.getManager = function getManager() {
+  let results = [];
+  db.query(
+    `SELECT CONCAT(first_name, " ",last_name) AS manager FROM employees`,
+    function (err, rows) {
+      if (err) {
+        console.log("err: " + err);
+        throw err;
+      }
+      for (var i = 0; i < rows.length; i++) {
+        results.push(rows[i].manager);
+      }
+    }
+  );
+  return results;
+};
